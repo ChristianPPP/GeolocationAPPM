@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Censo 2022</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="signOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="container">
+    <ion-avatar (click)="changeImage()">
+      <img *ngIf="profile?.img; else placeholder_avatar;" [src]="profile.img" />
+      <ng-template #placeholder_avatar>
+        <div class="fallback">
+          <p>Select avatar</p>
+        </div>
+      </ng-template>
+    </ion-avatar>
+  </div>
+
+
+  <ion-col size="5">
+    <ion-textarea autoGrow="true" class="message-input" rows="1" maxLength="500" [(ngModel)]="cedula" >
+    </ion-textarea>
+  </ion-col>
+
+  <ion-col size="5" class="col" *ngIf="profile?.cedula; else notCedula">
+    <ion-label>Cedula: {{ profile.cedula }}</ion-label>
+  </ion-col>
+
+  <ng-template #notCedula>
+    <ion-col size="5">
+      <ion-label class="col">No existe cedula registrada para esta cuenta.</ion-label>
+    </ion-col>
+  </ng-template>
+  
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Procedimiento</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content *ngIf="coordinates?.latitude && coordinates?.longitude; else Block">
+      <p>Latitud: {{ coordinates.latitude }}</p>
+      <p>Longitud: {{ coordinates.longitude }}</p>
+    </ion-card-content>
+
+    <ng-template #Block>
+      Para realizar el censo en línea carga tu foto, ingresa tu número de cedula,
+      obten tu ubicación mediante el botón 🧭 y envía tus datos.
+    </ng-template>
+
+  
+
+    <ion-button expand="block" fill="clear" color="primary" 
+      class="msg-btn" (click)="getCurrentCoordinates()"(click)="ngOnInit()">
+        <ion-icon name="locate-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+  </ion-card>
+
+  <ion-button expand="block" fill="clear" color="primary" [disabled]="cedula === ''"
+  class="msg-btn" (click)="sendGeolocationData()"(click)="ngOnInit()">
+  <ion-icon name="cloud-upload-outline" slot="icon-only"></ion-icon>
+  </ion-button>
+
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+  </ion-toolbar>
+</ion-footer>
